@@ -30,7 +30,7 @@ def search_query(query, lang):
 
     end_time = time.time()
     elapsed = end_time - start_time
-    print(f"\t> Search time: {elapsed:.2f} seconds")
+    print(f"    > Search time: {elapsed:.2f} seconds")
 
     return results
 

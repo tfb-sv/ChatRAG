@@ -14,7 +14,8 @@ PROMPT_GUIDER = {
         "Lütfen aşağıda verilen bilgilere dayanarak soruyu kısaca yanıtla.",
         "Bilgi",
         "Soru",
-        "Cevap"
+        "Cevap",
+        "Arama Sorgusu"
     ],
     "en": [
         "You're a helpful, wise, and polite personal assistant.",
@@ -22,7 +23,8 @@ PROMPT_GUIDER = {
         "Please answer the question briefly based on the information given below.",
         "Information",
         "Question",
-        "Answer"
+        "Answer",
+        "Search Query"
     ]
 }
 
@@ -53,20 +55,22 @@ def rank_searches(query, searches):
 
     end_time = time.time()
     elapsed = end_time - start_time
-    print(f"\t> Embedding time: {elapsed:.2f} seconds")
+    print(f"    > Embedding time: {elapsed:.2f} seconds")
 
     return top_context
 
 def generate_answer(
-        conversation_history, question, context, lang="tr"
+        question, context, conversation_history, lang
     ):
     start_time = time.time()
 
-    prompt = (
-        f"{PROMPT_GUIDER[lang][2]}\n\n"
-        f"{PROMPT_GUIDER[lang][3]}:\n{context}\n\n"
-        f"{PROMPT_GUIDER[lang][4]}: {question}"
-    )
+    if context:
+        prompt = (
+            f"{PROMPT_GUIDER[lang][2]}\n\n"
+            f"{PROMPT_GUIDER[lang][3]}:\n{context}\n\n"
+            f"{PROMPT_GUIDER[lang][4]}: {question}"
+        )
+    else: prompt = question
 
     messages = conversation_history + [{"role": "user", "content": prompt}]
 
@@ -81,6 +85,6 @@ def generate_answer(
 
     end_time = time.time()
     elapsed = end_time - start_time
-    print(f"\t> Answer generation time: {elapsed:.2f} saniye")
+    print(f"    > Answer generation time: {elapsed:.2f} saniye")
 
     return result

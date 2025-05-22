@@ -1,1 +1,1 @@
-# gptRAG
+# ChatRAG

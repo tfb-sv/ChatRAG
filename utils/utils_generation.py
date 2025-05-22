@@ -9,13 +9,17 @@ OPENAI_MODEL = "gpt-4o"
 
 PROMPT_GUIDER = {
     "tr": [
-        "Aşağıda verilen bilgiye dayanarak soruyu kısaca yanıtla.",
+        "Sen yardımsever, bilge ve kibar bir kişisel asistansın.",
+        "Şu ana dek yaptığımız konuşmalar:",
+        "Lütfen aşağıda verilen bilgilere dayanarak soruyu kısaca yanıtla.",
         "Bilgi",
         "Soru",
         "Cevap"
     ],
     "en": [
-        "Answer the question briefly based on the information given below.",
+        "You're a helpful, wise, and polite personal assistant.",
+        "The conversation we've had so far:",
+        "Please answer the question briefly based on the information given below.",
         "Information",
         "Question",
         "Answer"
@@ -53,18 +57,22 @@ def rank_searches(query, searches):
 
     return top_context
 
-def generate_answer(question, context, lang="tr"):
+def generate_answer(
+        conversation_history, question, context, lang="tr"
+    ):
     start_time = time.time()
 
     prompt = (
-        f"{PROMPT_GUIDER[lang][0]}\n\n"
-        f"{PROMPT_GUIDER[lang][1]}:\n{context}\n\n"
-        f"{PROMPT_GUIDER[lang][2]}: {question}"
+        f"{PROMPT_GUIDER[lang][2]}\n\n"
+        f"{PROMPT_GUIDER[lang][3]}:\n{context}\n\n"
+        f"{PROMPT_GUIDER[lang][4]}: {question}"
     )
+
+    messages = conversation_history + [{"role": "user", "content": prompt}]
 
     response = client.chat.completions.create(
         model=OPENAI_MODEL,
-        messages=[{"role": "user", "content": prompt}],
+        messages=messages,
         temperature=TEMPERATURE,
         max_tokens=MAX_TOKENS
     )

@@ -48,7 +48,7 @@ def clear_terminal():
 if __name__ == "__main__":
     print(
 """
-ChatRAG: A ChatGPT + Google-powered RAG chat system
+ChatRAG: A ChatGPT + Google-powered RAG Chatbot System
 
     - Select a language: "tr" (Turkish) or "en" (English).
     - If you enter a query, ChatGPT replies using information fetched from Google.

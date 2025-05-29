@@ -1,14 +1,17 @@
 import time
 import requests
 
+# Load SerpAPI credentials and base URL
 SERP_TOKEN = open("utils/credentials_serp.env", encoding="utf-8").read().strip()
 SERP_URL = "https://serpapi.com/search"
 
 NUM_SEARCHES = 20
 
+# Perform Google search using SerpAPI
 def search_query(query, lang):
     start_time = time.time()
 
+    # Set up search parameters
     url = SERP_URL
     params = {
         "q": query,
@@ -18,9 +21,12 @@ def search_query(query, lang):
         "hl": lang,
         "gl": lang,
     }
+
+    # Send GET request
     res = requests.get(url, params=params)
     data = res.json()
 
+    # Extract title + snippet from results
     results = []
     for result in data.get("organic_results", []):
         title = result.get("title", "")
@@ -34,6 +40,7 @@ def search_query(query, lang):
 
     return results
 
+# Example static search result for testing
 def example_search_result(lang):
     if lang == "tr":
         results_raw = {
@@ -62,6 +69,7 @@ def example_search_result(lang):
           ]
         }
 
+    # Extract and format search results
     results = []
     for item in results_raw["organic_results"]:
         title = item.get("title", "")
